@@ -20,6 +20,10 @@ def main():
             cuisine = requestCuisine()
     cuisine = cuisineDict(cuisine)
     price = requestPrice()
+    if price == 0:
+        while price == 0:
+            sendMessage("Whoops, looks like there isn't enough information for me to really do much... why don't you try again?")
+            price = requestPrice()
 
 def getMessages():
     '''
