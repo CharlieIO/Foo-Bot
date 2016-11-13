@@ -9,9 +9,7 @@ zcdb = ZipCodeDatabase()
 def main():
     cuisines = {
         'french': 100,
-        'italian': 12,
-        'german': 20,
-        'american': 40,
+        'pizza': 40,
     }
     avg_price = 3
     zipcodes = ['06514']
@@ -41,7 +39,7 @@ def getRestaurantJson(cuisines, price, zipcodes):
 
 def populateParams(paramDict, cuisine_dict, avg_price):
     paramDict['key'] = api_key
-    cuisines = ",".join([k for k in sorted(cuisine_dict, key=lambda k: cuisine_dict[k], reverse=True)][:3])  # Filter to top 3 cuisines
+    cuisines = ",".join([k for k in sorted(cuisine_dict, key=lambda k: cuisine_dict[k], reverse=True)][:2])  # Filter to top 2 cuisines
     paramDict['prices'] = [avg_price]
     paramDict['cuisines'] = cuisines
 
