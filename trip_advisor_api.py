@@ -14,9 +14,9 @@ def main():
         'american': 40,
     }
     avg_price = 3
-    zipcodes = [['a', '13346']]
+    zipcodes = ['06514']
 
-    return getRestaurantJson(cuisines, avg_price, zipcodes)
+    print getRestaurantJson(cuisines, avg_price, zipcodes)
 
 '''
 Takes a list of zipcodes and finds the most centralized point in longitude
@@ -36,11 +36,12 @@ def getRestaurantJson(cuisines, price, zipcodes):
     lon, lat = getCentralLocation(zipcodes)
     populateParams(params, cuisines, price);  # modified in place.
     r = requests.get(API_BASE + "map/{lat},{lon}/restaurants".format(lon=lon, lat=lat), params=params)
+    print r.url
     return r.json()
 
 def populateParams(paramDict, cuisine_dict, avg_price):
     paramDict['key'] = api_key
-    cuisines = [k for k in sorted(cuisine_dict, key=lambda k: cuisine_dict[k], reverse=True)][:3]  # Filter to top 3 cuisines
+    cuisines = ",".join([k for k in sorted(cuisine_dict, key=lambda k: cuisine_dict[k], reverse=True)][:3])  # Filter to top 3 cuisines
     paramDict['prices'] = [avg_price]
     paramDict['cuisines'] = cuisines
 

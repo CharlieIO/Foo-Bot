@@ -16,11 +16,8 @@ def main():
 	messages = getMessages()
 	found, message = hasCallWord(messages)
 	if found:
-		for message in nameMessages: #finds the user that called the bot
-			if message[2].upper() == keyword.upper():
-				global name
-				name = message[1]
-				break
+		global name
+		name = nameMessages
 		apathy = requestApathy() #of the form (user_id, apathy level)
 		if len(apathy) == 0:
 			while len(apathy) == 0:
@@ -82,11 +79,9 @@ def getMessagesName():
 	r = requests.get("https://api.groupme.com/v3/groups/{}/messages?token={}".format(group_id, ACCESS_TOKEN))
 	for message in r.json()["response"]["messages"]:
 		# print r.json()
-		if message['name'] == bot_name:
-			break
-		print message['text']
-		messages += [[message['sender_id'], message['name'], message['text']]]
-	return messages
+		if keyword.upper() in message['text'].upper():
+			return message['name']
+	return ""
 
 def hasCallWord(messages):
 	for message in messages:
