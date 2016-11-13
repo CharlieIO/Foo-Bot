@@ -56,6 +56,7 @@ def main():
 		for result in results:
 			sendMessage(result['name'] + "\n" + result['street'] + ", " + result["city"] + "\n" + result['web_url'])
 			time.sleep(1)
+	return 0
 
 def getMessages():
 	'''
