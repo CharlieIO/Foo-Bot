@@ -68,7 +68,7 @@ def getMessages():
 		# print r.json()
 		if message['name'] == bot_name:
 			break
-		print message['text']
+		# print message['text']
 		messages += [[message['sender_id'], message['text']]]
 	return messages
 
@@ -95,10 +95,10 @@ def hasDone(messages):
 
 def sendMessage(message):
 	r = requests.post("https://api.groupme.com/v3/bots/post", data={"bot_id": bot_id, "text": message})
-	print "\"" + message + "\" posted\n"
+	# print "\"" + message + "\" posted\n"
 def sendPictureMessage(message, image_url):
 	r = requests.post("https://api.groupme.com/v3/bots/post", data={"bot_id": bot_id, "text": message, "picture_url": image_url})
-	print "\"" + message + "\" posted with picture\n"
+	# print "\"" + message + "\" posted with picture\n"
 def requestApathy():
 	'''
 	returns array with [[user_id, apathy level],...] as struct
@@ -126,7 +126,7 @@ def filterForInt(messages):
 			else:
 				toRemove += [message]
 		except ValueError, e:
-			print "One user has entered an invalid entry:", e, message[1]
+			# print "One user has entered an invalid entry:", e, message[1]
 			toRemove += [message]
 	for message in toRemove:
 		messages.remove(message)
@@ -177,10 +177,10 @@ def cuisineDict(apathy, food):
 	cuisine = {}
 	for aitem in apathy:
 		for fitem in food[:-1]:
-			print fitem
+			# print fitem
 			if aitem[0] == fitem[0]:
 				cuisine[fitem[1]] += int(aitem[1])
-	print cuisine
+	# print cuisine
 	return cuisine
 
 def requestPrice():
@@ -206,7 +206,7 @@ def requestPrice():
 				seen += [message[0]]
 				text += [message[1]]
 		except ValueError, e:
-			print "One user has entered an invalid entry:", e, message[1]
+			# print "One user has entered an invalid entry:", e, message[1]
 			toRemove += [message]
 	for message in toRemove:
 		messages.remove(message)
@@ -237,7 +237,7 @@ def requestZips():
 			zips += [message[1]]
 	for message in toRemove:
 		messages.remove(message)
-	print zips
+	# print zips
 	return zips
 
 if __name__ == '__main__':

@@ -34,7 +34,7 @@ def getRestaurantJson(cuisines, price, zipcodes):
     lon, lat = getCentralLocation(zipcodes)
     populateParams(params, cuisines, price);  # modified in place.
     r = requests.get(API_BASE + "map/{lat},{lon}/restaurants".format(lon=lon, lat=lat), params=params)
-    print r.url
+    # print r.url
     return r.json()
 
 def populateParams(paramDict, cuisine_dict, avg_price):
