@@ -45,8 +45,8 @@ def populateParams(paramDict, cuisine_dict, avg_price):
     paramDict['cuisines'] = cuisines
 
 # zip is an integer.
-def zipToLongLat(zip):
-    zipcode = zcdb[zip[1].encode('UTF-8')]
+def zipToLongLat(zipin):
+    zipcode = zcdb[zipin.encode('UTF-8')]
     return (zipcode.longitude, zipcode.latitude)
 
 if __name__ == '__main__':

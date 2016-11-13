@@ -42,7 +42,7 @@ def main():
 			 while zips == 0:
 				sendMessage("Whoops, looks like there isn't enough information for me to really do much... why don't you try again?")
 				zips = requestZips()
-		location_json = TripAPI.getRestaurantJson(cuisine, price, zips)
+		location_json = TripAPI.getRestaurantJson(cuisine, price, zips)[0]
 		results = []
 		if location_json['paging']['results'] > 0:
 			for location in location_json['data']:
@@ -152,26 +152,27 @@ def requestCuisine():
 		time.sleep(1)
 	toRemove = []
 	for message in messages:
+		found = False
 		for food in foods:
-			if message[1].upper() in food.upper(): #enables user to type Deli instead of delicatessen
+			if message[1].encode('UTF-8').strip() in food.upper(): #enables user to type Deli instead of delicatessen
 				message[1] = food
+				found = True
+				break
 			elif "BURGER" in message[1].upper(): #Handling limited edge case
 				message[1] = 'American'
+				found = True
+				break
 			elif not d.check(message[1].lower().title()):
 				for suggestion in d.suggest(message[1].lower().title()) + ["burger"]:
 					if food.lower() == suggestion.lower():
 						sendMessage("Interpreting {} as {}".format(message[1], food))
 						message[1] = food
+						found = True
 						break
-			else:
-				if message not in toRemove:
-					toRemove += [message]
-	for message in toRemove:
-		try:
+
+		if not found:
 			messages.remove(message)
-		except:
-			pass
-	return messages[1:]
+	return messages
 
 def cuisineDict(apathy, food):
 	'''
@@ -179,7 +180,7 @@ def cuisineDict(apathy, food):
 	'''
 	cuisine = {}
 	for aitem in apathy:
-		for fitem in food:
+		for fitem in food[:-1]:
 			print fitem
 			if aitem[0] == fitem[0]:
 				cuisine[fitem[1]] += int(aitem[1])
@@ -226,18 +227,22 @@ def requestZips():
 	'''
 	sendMessage("(4/4) Please reply with the relevant zip code(s). " + str(name) + ", type \"done\" when everyone is finished!")
 	found = False
+	zips = []
 	while not found:
 		messages = getMessages()
 		if hasDone(messages):
 			found = True
 		time.sleep(1)
 	toRemove = []
-	for message in messages:
-		if not message.isdigit() and len(message) == 5:
+	for message in messages[1:]:
+		if not message[1].isdigit() and len(message[1]) == 5:
 			toRemove += [message]
+		else:
+			zips += [message[1]]
 	for message in toRemove:
 		messages.remove(message)
-	return messages
+	print zips
+	return zips
 
 if __name__ == '__main__':
 	main()
