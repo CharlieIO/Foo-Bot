@@ -98,9 +98,11 @@ def hasDone(messages):
 def sendMessage(message):
     r = requests.post("https://api.groupme.com/v3/bots/post", data={"bot_id": bot_id, "text": message})
     print "\"" + message + "\" posted\n"
+    
 def sendPictureMessage(message, image_url):
     r = requests.post("https://api.groupme.com/v3/bots/post", data={"bot_id": bot_id, "text": message, "picture_url": image_url})
     print "\"" + message + "\" posted with picture\n"
+
 def requestApathy():
     '''
     returns array with [[user_id, apathy level],...] as struct
