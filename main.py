@@ -1,5 +1,6 @@
 import requests
 import time
+import trip_advisor_api as TripAPI
 
 ACCESS_TOKEN = os.environ['GROUPME_TOKEN']
 group_id = os.environ['GROUPME_GROUP_ID']
@@ -29,6 +30,24 @@ def main():
          while zips == 0:
             sendMessage("Whoops, looks like there isn't enough information for me to really do much... why don't you try again?")
             zips = requestZips()
+    location_json = TripAPI.getRestaurantJson(cuisine, price, zips)
+    results = []
+    if location_json['paging']['results'] > 0:
+        for location in location_json['data']:
+            results.append({
+                'name': location['name'],
+                'street': location['address_obj']['street1'],
+                'city': location['address_obj']['city'],
+                'avg_distance': location['distance'],
+                'web_url': location['web_url'],
+                'price_level': location['price_level'],
+                'cuisine': location['cuisine']
+            })
+    sendMessage("Here's what I found!")
+    for result in results:
+        sendMessage(result['name'] + "\n" + result['street'] + ", " + result["city"] + "\n" + result['web_url'])
+        time.sleep(1)
+
 
 def getMessages():
     '''
@@ -66,14 +85,14 @@ def requestApathy():
         messages = getMessages()
         if hasDone(messages):
             found = True
-        time.sleep(5) 
+        time.sleep(1)
     messages = filterForInt(messages)
     return messages
 
 def filterForInt(messages):
     '''
     [[user_id, message]] -> [[user_id, int(message)]]
-    removes any invalid messages 
+    removes any invalid messages
     '''
     for message in messages:
         try:
@@ -119,7 +138,7 @@ def cuisineDict(apathy, food):
 def requestPrice():
     '''
     -> int
-    returns average price 
+    returns average price
     '''
     sendMessage("(3/4) how much are you looking to spend? On a scale of 1-4, type your price level (1 being cheapest and 4 being most expensive) and type \"done\" when everyone is finished!")
     found = False
@@ -151,8 +170,8 @@ def requestZips():
         messages = getMessages()
         if hasDone(messages):
             found = True
-        time.sleep(5) 
-    return messages[:-1]
+        time.sleep(5)
+    return messages[1:]
 
 if __name__ == '__main__':
     main()

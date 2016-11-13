@@ -14,9 +14,9 @@ def main():
         'american': 40,
     }
     avg_price = 3
-    zipcodes = [13346]
+    zipcodes = [['a', '13346']]
 
-    print getRestaurantJson(cuisines, avg_price, zipcodes)
+    return getRestaurantJson(cuisines, avg_price, zipcodes)
 
 '''
 Takes a list of zipcodes and finds the most centralized point in longitude
@@ -46,7 +46,7 @@ def populateParams(paramDict, cuisine_dict, avg_price):
 
 # zip is an integer.
 def zipToLongLat(zip):
-    zipcode = zcdb[zip]
+    zipcode = zcdb[zip[1].encode('UTF-8')]
     return (zipcode.longitude, zipcode.latitude)
 
 if __name__ == '__main__':
