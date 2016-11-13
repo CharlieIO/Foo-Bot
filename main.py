@@ -105,7 +105,7 @@ def requestApathy():
     '''
     returns array with [[user_id, apathy level],...] as struct
     '''
-    sendMessage("(1/4) how picky are you? Reply with a number (1-10, 1 being indifferent and 10 being extremely picky) and type \"done\" when everyone is finished!")
+    sendMessage("(1/4) how picky are you? Reply with a number (1-10, 1 being indifferent and 10 being extremely picky).", str(name), "type \"done\" when everyone is finished!")
     found = False
     while not found:
         messages = getMessages()
