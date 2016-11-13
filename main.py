@@ -24,6 +24,11 @@ def main():
         while price == 0:
             sendMessage("Whoops, looks like there isn't enough information for me to really do much... why don't you try again?")
             price = requestPrice()
+    zips = requestZips()
+    if len(zips) == 0:
+         while zips == 0:
+            sendMessage("Whoops, looks like there isn't enough information for me to really do much... why don't you try again?")
+            zips = requestZips()
 
 def getMessages():
     '''
@@ -47,12 +52,10 @@ def hasDone(messages):
 
 def sendMessage(message):
     r = requests.post("https://api.groupme.com/v3/bots/post", data={"bot_id": bot_id, "text": message})
-    print "\"" + message + "\" posted: \n" + r.text
-
+    print "\"" + message + "\" posted\n"
 def sendPictureMessage(message, image_url):
     r = requests.post("https://api.groupme.com/v3/bots/post", data={"bot_id": bot_id, "text": message, "picture_url": image_url})
-    print "\"" + message + "\" posted with picture: \n" + r.text
-
+    print "\"" + message + "\" posted with picture\n"
 def requestApathy():
     '''
     returns array with [(user_id, apathy level),...] as struct
@@ -100,7 +103,7 @@ def requestCuisine():
                 message[1] = food
             elif "BURGER" in message.upper(): #Handling limited edge case
                 message[1] = 'American'
-    return messages
+    return messages[:-1]
 
 def cuisineDict(apathy, food):
     '''
@@ -127,12 +130,26 @@ def requestPrice():
         if hasDone(messages):
             found = True
         time.sleep(5)
-    for message in reversed(messages): #flip list for reverse chronological order
+    for message in reversed(messages[:-1]): #flip list for reverse chronological order
         if message[0] not in seen:
-            message += seen
+            seen += message
     for message in seen:
         total += message[1] #sum all price values
     return int(total/len(seen)) #take average with round-down (inability to spend money takes priority)
+
+def requestZips():
+    '''
+    -> [str]
+    returns list with [zip_code,...]
+    '''
+    sendMessage("(4/4) Please reply with the relevant zip code(s) and type \"done\" when everyone is finished!")
+    found = False
+    while not found:
+        messages = getMessages()
+        if hasDone(messages):
+            found = True
+        time.sleep(5) 
+    return messages[:-1]
 
 if __name__ == '__main__':
     main()
