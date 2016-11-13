@@ -42,7 +42,7 @@ def main():
 		location_json = TripAPI.getRestaurantJson(cuisine, price, zips)
 		results = []
 		if location_json['paging']['results'] > 0:
-			for location in location_json['data'][:1]:
+			for location in location_json['data'][-3:]:
 				results.append({
 					'name': location['name'],
 					'street': location['address_obj']['street1'],
