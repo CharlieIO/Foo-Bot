@@ -6,6 +6,6 @@ do
     echo "No need to start a new process"
     sleep 30
   else
-    $(python main.py &)
+    $(python main.py &) || echo "Python error!" && continue
   fi
 done

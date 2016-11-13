@@ -42,10 +42,10 @@ def main():
 			 while zips == 0:
 				sendMessage("Whoops, looks like there isn't enough information for me to really do much... why don't you try again?")
 				zips = requestZips()
-		location_json = TripAPI.getRestaurantJson(cuisine, price, zips)[0]
+		location_json = TripAPI.getRestaurantJson(cuisine, price, zips)
 		results = []
 		if location_json['paging']['results'] > 0:
-			for location in location_json['data']:
+			for location in location_json['data'][:1]:
 				results.append({
 					'name': location['name'],
 					'street': location['address_obj']['street1'],
