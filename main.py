@@ -18,7 +18,7 @@ def main():
         while len(cuisine) == 0:
             sendMessage("Whoops, looks like there isn't enough information for me to really do much... why don't you try again?")
             cuisine = requestCuisine()
-    cuisine = cuisineDict(cuisine)
+    cuisine = cuisineDict(apathy, cuisine)
     price = requestPrice()
     if price == 0:
         while price == 0:
@@ -41,7 +41,7 @@ def getMessages():
         if message['name'] == bot_name:
             break;
         print message['text']
-        messages += [(message['sender_id'], message['text'])]
+        messages += [[message['sender_id'], message['text']]]
     return messages
 
 def hasCallWord(messages):
@@ -58,7 +58,7 @@ def sendPictureMessage(message, image_url):
     print "\"" + message + "\" posted with picture\n"
 def requestApathy():
     '''
-    returns array with [(user_id, apathy level),...] as struct
+    returns array with [[user_id, apathy level],...] as struct
     '''
     sendMessage("(1/4) how picky are you? Reply with a number (1-10, 1 being indifferent and 10 being extremely picky) and type \"done\" when everyone is finished!")
     found = False
@@ -72,7 +72,7 @@ def requestApathy():
 
 def filterForInt(messages):
     '''
-    [(user_id, message)] -> [(user_id, int(message))]
+    [[user_id, message]] -> [[user_id, int(message)]]
     removes any invalid messages 
     '''
     for message in messages:
@@ -99,21 +99,21 @@ def requestCuisine():
         time.sleep(5)
     for message in messages:
         for food in foods:
-            if message.upper() in food.upper(): #enables user to type Deli instead of delicatessen
+            if message[1].upper() in food.upper(): #enables user to type Deli instead of delicatessen
                 message[1] = food
-            elif "BURGER" in message.upper(): #Handling limited edge case
+            elif "BURGER" in message[1].upper(): #Handling limited edge case
                 message[1] = 'American'
     return messages[:-1]
 
 def cuisineDict(apathy, food):
     '''
-    [(user_id, apathy),...], [(user_id, food),...] -> dict(food:weighted_count)
+    [[user_id, apathy],...], [[user_id, food],...] -> dict(food:weighted_count)
     '''
     cuisine = {}
-    for (akey, avalue) in apathy:
-        for (fkey, fvalue) in food:
-            if akey == fkey:
-                cuisine[fvalue] += int(avalue)
+    for aitem in apathy:
+        for fitem in food[-1]:
+            if aitem[0] == fitem[0]:
+                cuisine[fitem[1]] += int(aitem[1])
     return cuisine
 
 def requestPrice():
@@ -125,17 +125,20 @@ def requestPrice():
     found = False
     total = 0 #total of prices for averaging
     seen = [] #to prevent duplicate prices being posted, only last entry counts
+    text = []
     while not found:
         messages = getMessages()
         if hasDone(messages):
             found = True
         time.sleep(5)
-    for message in reversed(messages[:-1]): #flip list for reverse chronological order
+    messages = messages[1:]
+    for message in messages: #flip list for reverse chronological order
         if message[0] not in seen:
-            seen += message
-    for message in seen:
-        total += message[1] #sum all price values
-    return int(total/len(seen)) #take average with round-down (inability to spend money takes priority)
+            seen += [message[0]]
+            text += [message[1]]
+    for message in text:
+        total += int(message) #sum all price values
+    return int(total/len(text)) #take average with round-down (inability to spend money takes priority)
 
 def requestZips():
     '''
