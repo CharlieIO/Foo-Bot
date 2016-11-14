@@ -2,11 +2,12 @@ import requests
 import time
 import trip_advisor_api as TripAPI
 import enchant
+import os
 
-ACCESS_TOKEN = os.environ['GROUPME_TOKEN']
-group_id = os.environ['GROUPME_GROUP_ID']
+ACCESS_TOKEN = os.envrion['GROUPME_TOKEN']
+group_id = os.envrion['GROUPME_GROUP_ID']
 bot_name = "Foo-Bot"
-bot_id = os.environ['GROUPME_BOT_ID']
+bot_id = "os.envrione['GROUPME_BOT_ID']
 keyword = "@foo-bot" #keyword to summon the bot
 name = "" #this will be modified by main() -- do not touch
 d = enchant.Dict('en_US')

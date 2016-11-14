@@ -1,4 +1,5 @@
 import requests
+import os
 from pyzipcode import ZipCodeDatabase
 
 api_key = os.environ['TRIP_ADVISOR_KEY']
