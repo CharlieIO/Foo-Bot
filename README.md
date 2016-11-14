@@ -1,5 +1,9 @@
+[FooBot]: http://imgur.com/9e4ed7fc-e450-4346-85d8-ed73fc74fb11 "FooBot"
+![FooBot]
+
 # F🍔🍟Bot (FooBot)
 A GroupMe bot to collaboratively discover your next food-adventure. 🍽
+
 ##Setup / Usage
 
 1. Clone it!
