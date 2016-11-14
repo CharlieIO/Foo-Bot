@@ -1,4 +1,4 @@
-[FooBot]: http://imgur.com/9e4ed7fc-e450-4346-85d8-ed73fc74fb11 "FooBot"
+[FooBot]: http://i.imgur.com/qrIgGQm.png "FooBot"
 ![FooBot]
 
 # F🍔🍟Bot (FooBot)
